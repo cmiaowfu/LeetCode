@@ -53,3 +53,54 @@ public:
         }       
     }
 };
+
+Solution 3: One-pass Hash Table
+Time complexity: O(n). Traverse n elements once. Each look up time is of O(1).
+Space complesity: O(n). Extra space required at most n. 
+
+// Using ordered map
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+        std::map<int, int> map_nums;
+        
+        vector<int> indexes;
+        for (int i = 0; i < nums.size(); ++i)
+        {
+            int tmp = target - nums[i];
+            std::map<int, int>::iterator it;
+            it = map_nums.find(tmp);
+            if( (it != map_nums.end()) )
+            {
+                indexes.push_back(i);
+                indexes.push_back(it->second);
+                return indexes;
+            }    
+            map_nums[ nums[i] ] = i;
+        }
+        
+    }
+};
+
+// Using unordered_map - beats 92.29%
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        std::vector<int> results;
+        std::unordered_map<int, int> nums_map;
+        for (int i = 0; i < nums.size(); ++i)
+        {
+            int complement = target - nums[i];
+            std::unordered_map<int, int>::const_iterator it;
+            it = nums_map.find( complement );
+            if (it != nums_map.end())
+            {
+                results.push_back(it->second);
+                results.push_back(i);
+                return results;
+            }
+            nums_map[nums[i]] = i;
+        }
+    }
+};
