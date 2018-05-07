@@ -1,0 +1,38 @@
+Solution 1: Brute Force
+Time complexity: O(n^3)
+Space complesity: O(min(n,m)), where m is the size of the charset/alphabet. 
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+        if (s.empty()) return 0;
+        
+        int maxLen = 1;
+        for ( int i = 0; i < s.size(); ++i )
+        {
+        
+            for ( int j = i + maxLen; j < s.size(); ++j )
+            {
+                if ( !allUnique(s, i, j) ) break; 
+                int len = j-i+1;
+                maxLen = maxLen > len ? maxLen : len;    
+            }
+        }
+        return maxLen;
+    }
+    
+    bool allUnique(string &s, int start, int end)
+    {
+        std::map<char, int> charMap; 
+        for (int i = start; i <= end; ++i )
+        {
+            char ch = s[i];
+            if (charMap.count(ch)) return false; 
+            charMap[ch] = i; 
+        }
+        return true;        
+    }
+    
+    
+};
