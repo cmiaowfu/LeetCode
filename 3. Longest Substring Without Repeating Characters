@@ -33,6 +33,34 @@ public:
         }
         return true;        
     }
-    
-    
+};
+
+Solution 2: Sliding Window
+Time complexity: O(n). The worst case each character will be visited twice by i and j, check if a character is contained 
+in the map takes O(1), so the time complexity is O(2n) = O(n).
+Space complexity: Same as Solution 1, O(min(n,m)).
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        std::map<char, int> charMap;
+        int i = 0, j = 0, len = 0;
+        int n = s.size();
+        while( i < n && j < n)
+        {
+            char ch = s[j];
+            if (!charMap.count(ch))
+            {
+                charMap[ch] = i;
+                ++j;
+                len = len > (j-i) ? len : (j-i);
+            } 
+            else 
+            {
+                charMap.erase(s[i]);
+                ++i;
+            }
+        }
+        return len;
+    }
 };
