@@ -35,29 +35,30 @@ public:
     }
 };
 
-Solution 2: Sliding Window
+Solution 2: Sliding Window w/ unordered set.
 Time complexity: O(n). The worst case each character will be visited twice by i and j, check if a character is contained 
 in the map takes O(1), so the time complexity is O(2n) = O(n).
 Space complexity: Same as Solution 1, O(min(n,m)).
+33%
 
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        std::map<char, int> charMap;
+        std::unordered_set<char> charSet;
         int i = 0, j = 0, len = 0;
         int n = s.size();
         while( i < n && j < n)
         {
             char ch = s[j];
-            if (!charMap.count(ch))
+            if (!charSet.count(ch))
             {
-                charMap[ch] = i;
+                charSet.insert(ch);
                 ++j;
-                len = len > (j-i) ? len : (j-i);
+                len = max( len, (j-i) );
             } 
             else 
             {
-                charMap.erase(s[i]);
+                charSet.erase(s[i]);
                 ++i;
             }
         }
