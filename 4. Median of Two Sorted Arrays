@@ -1,4 +1,7 @@
-Solution 1: 28.91%
+Solution 1: Binary search
+28.91%
+Time complexity: O(log(min(m,n)))
+Space complexity: 1
 
 class Solution {
 public:
@@ -94,5 +97,45 @@ public:
                 return 0.5*(maxL + minR);
             }
         
+    }
+};
+
+
+Solution 2: find k-th smallest number
+51.41%
+Time complexity: log(m+n)
+space complexity: 1
+
+class Solution {
+public:
+    int findkth(int k, vector<int>::iterator a_begin, vector<int>::iterator a_end, vector<int>::iterator b_begin, vector<int>::iterator b_end) {//0-based       
+        int m = distance(a_begin, a_end);
+        int n = distance(b_begin, b_end);
+        if (a_begin == a_end) return *(b_begin+k);
+        if (b_begin == b_end) return *(a_begin+k);
+        if (k == 0) return min(*a_begin, *b_begin); //k will finally reduce to 0 no matter k starts as an odd or an even number.
+        int half = (k+1)/2;
+        int aind = min(half, m);
+        int bind = min(half, n);
+        if(a_begin[aind-1] < b_begin[bind-1]) 
+        {
+            return findkth(k-aind, a_begin+aind, a_end, b_begin, b_end);
+        }
+        else 
+        {
+            return findkth(k-bind, a_begin, a_end, b_begin+bind, b_end);
+        }  
+    }
+    
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int total = nums1.size() + nums2.size();
+        int k = total / 2;
+        int m1 = findkth(k, nums1.begin(), nums1.end(), nums2.begin(), nums2.end()); //0-based       
+        if (total % 2)
+        {
+            return m1;
+        }
+        int m2 = findkth(k-1, nums1.begin(), nums1.end(), nums2.begin(), nums2.end());
+        return 0.5*(m1 + m2);
     }
 };
